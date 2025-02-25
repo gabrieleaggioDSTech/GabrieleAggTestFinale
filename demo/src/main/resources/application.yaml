@@ -1,0 +1,14 @@
+spring:
+  name: finale
+  datasource:
+    url: jdbc:mysql://localhost:3306/dbfinale?allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: 1234
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update #none
+    show-sql: true
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
