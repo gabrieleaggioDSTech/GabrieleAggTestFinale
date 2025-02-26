@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GabAggTestFInaleApplication {
+public class GabAggTestFinaleApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GabAggTestFInaleApplication.class, args);
+		SpringApplication.run(GabAggTestFinaleApplication.class, args);
 	}
 
 }
