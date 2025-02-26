@@ -1,6 +1,7 @@
 package com.demo.controller;
 
 import com.demo.object.dto.CreaUtenteDTO;
+import com.demo.object.dto.UpdateUtenteDTO;
 import com.demo.object.dto.crud.UtenteDTO;
 import com.demo.service.Utente.UtenteService;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +34,8 @@ public class UtenteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UtenteDTO> updateUtente(@PathVariable Long id, @RequestBody UtenteDTO utenteDTO) {
-        return ResponseEntity.ok(utenteService.updateUtente(id, utenteDTO));
+    public ResponseEntity<UtenteDTO> updateUtente(@PathVariable Long id, @RequestBody UpdateUtenteDTO updateUtenteDTO) {
+        return ResponseEntity.ok(utenteService.updateUtente(id, updateUtenteDTO));
     }
 
     @DeleteMapping("/{id}")

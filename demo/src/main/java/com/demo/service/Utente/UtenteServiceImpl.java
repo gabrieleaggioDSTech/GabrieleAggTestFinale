@@ -1,6 +1,8 @@
 package com.demo.service.Utente;
 
+import com.demo.mapper.UtenteMapper;
 import com.demo.object.dto.CreaUtenteDTO;
+import com.demo.object.dto.UpdateUtenteDTO;
 import com.demo.object.dto.crud.UtenteDTO;
 import com.demo.object.model.Utente;
 import com.demo.repository.UtenteRepository;
@@ -15,22 +17,24 @@ import java.util.stream.Collectors;
 public class UtenteServiceImpl implements UtenteService {
 
     private final UtenteRepository utenteRepository;
+    private final UtenteMapper utenteMapper;
 
-    public UtenteServiceImpl(UtenteRepository utenteRepository){
+    public UtenteServiceImpl(UtenteRepository utenteRepository, UtenteMapper utenteMapper){
         this.utenteRepository = utenteRepository;
+        this.utenteMapper = utenteMapper;
     }
 
     @Override
     public UtenteDTO getUtenteById(Long id) {
         return utenteRepository.findById(id)
-                .map(DevTools::convertToDTO)
+                .map(utenteMapper::toDTO)
                 .orElse(null);
     }
 
     @Override
     public List<UtenteDTO> getAllUtenti() {
         return utenteRepository.findAll().stream()
-                .map(DevTools::convertToDTO)
+                .map(utenteMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -41,17 +45,17 @@ public class UtenteServiceImpl implements UtenteService {
         utente.setNome(creaUtenteDTO.getNome());
         utente.setEmail(creaUtenteDTO.getEmail());
         Utente savedUtente = utenteRepository.save(utente);
-        return DevTools.convertToDTO(savedUtente);
+        return utenteMapper.toDTO(savedUtente);
     }
 
     @Override
     @Transactional
-    public UtenteDTO updateUtente(Long id, UtenteDTO utenteDTO) {
+    public UtenteDTO updateUtente(Long id, UpdateUtenteDTO updateUtenteDTO) {
         return utenteRepository.findById(id)
                 .map(existingUtente -> {
-                    existingUtente.setNome(utenteDTO.getNome());
-                    existingUtente.setEmail(utenteDTO.getEmail());
-                    return DevTools.convertToDTO(utenteRepository.save(existingUtente));
+                    existingUtente.setNome(updateUtenteDTO.getNome());
+                    existingUtente.setEmail(updateUtenteDTO.getEmail());
+                    return utenteMapper.toDTO(utenteRepository.save(existingUtente));
                 })
                 .orElse(null);
     }
@@ -65,9 +69,9 @@ public class UtenteServiceImpl implements UtenteService {
     @Override
     @Transactional
     public UtenteDTO saveUser(UtenteDTO user) {
-        Utente utente = DevTools.convertToEntity(user);
+        Utente utente = utenteMapper.toEntity(user);
         Utente savedUtente = utenteRepository.save(utente);
-        return DevTools.convertToDTO(savedUtente);
+        return utenteMapper.toDTO(savedUtente);
     }
 
 }

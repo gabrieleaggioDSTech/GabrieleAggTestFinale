@@ -1,8 +1,8 @@
 package com.demo.service.Ordine;
 
+import com.demo.mapper.OrdineMapper;
 import com.demo.object.dto.CreaDettaglioOrdineDTO;
 import com.demo.object.dto.CreaOrdineDTO;
-import com.demo.object.dto.crud.DettaglioOrdineDTO;
 import com.demo.object.dto.crud.OrdineDTO;
 import com.demo.object.model.DettaglioOrdine;
 import com.demo.object.model.Ordine;
@@ -11,7 +11,6 @@ import com.demo.object.model.Utente;
 import com.demo.repository.OrdineRepository;
 import com.demo.repository.ProdottoRepository;
 import com.demo.repository.UtenteRepository;
-import com.demo.tools.DevTools;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,24 +24,26 @@ public class OrdineServiceImpl implements OrdineService {
     private final OrdineRepository ordineRepository;
     private final UtenteRepository utenteRepository;
     private final ProdottoRepository prodottoRepository;
+    private final OrdineMapper ordineMapper;
 
-    public OrdineServiceImpl(OrdineRepository ordineRepository, UtenteRepository utenteRepository, ProdottoRepository prodottoRepository) {
+    public OrdineServiceImpl(OrdineRepository ordineRepository, UtenteRepository utenteRepository, ProdottoRepository prodottoRepository, OrdineMapper ordineMapper) {
         this.ordineRepository = ordineRepository;
         this.utenteRepository = utenteRepository;
         this.prodottoRepository = prodottoRepository;
+        this.ordineMapper  = ordineMapper;
     }
 
     @Override
     public OrdineDTO getOrdineById(Long id) {
         return ordineRepository.findById(id)
-                .map(DevTools::convertToDTO)
+                .map(ordineMapper::toDTO)
                 .orElse(null);
     }
 
     @Override
     public List<OrdineDTO> getAllOrdini() {
         return ordineRepository.findAll().stream()
-                .map(DevTools::convertToDTO)
+                .map(ordineMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -51,16 +52,13 @@ public class OrdineServiceImpl implements OrdineService {
     public OrdineDTO createOrdine(CreaOrdineDTO creaOrdineDTO) {
         Utente utente = utenteRepository.findById(creaOrdineDTO.getUtenteId()).orElse(null);
         if (utente == null) {
-            return null; // Oppure lanciare un'eccezione con ResponseEntity
+            return null;
         }
 
-        // Creazione dell'ordine
-        Ordine ordine = new Ordine();
-        ordine.setData(creaOrdineDTO.getData());
+        Ordine ordine = ordineMapper.toEntity(creaOrdineDTO);
         ordine.setUtente(utente);
 
         List<DettaglioOrdine> dettagliOrdine = new ArrayList<>();
-
         for (CreaDettaglioOrdineDTO dettaglioDTO : creaOrdineDTO.getDettagli()) {
             Prodotto prodotto = prodottoRepository.findById(dettaglioDTO.getProdottoId()).orElse(null);
             if (prodotto == null || prodotto.getPrezzo() == null) {
@@ -71,22 +69,21 @@ public class OrdineServiceImpl implements OrdineService {
             dettaglioOrdine.setOrdine(ordine);
             dettaglioOrdine.setProdotto(prodotto);
             dettaglioOrdine.setQuantita(dettaglioDTO.getQuantita());
-
-            double prezzoTotale = prodotto.getPrezzo() * dettaglioDTO.getQuantita();
-            dettaglioOrdine.setPrezzoTotale(prezzoTotale);
+            dettaglioOrdine.setPrezzoTotale(prodotto.getPrezzo() * dettaglioDTO.getQuantita());
 
             dettagliOrdine.add(dettaglioOrdine);
         }
 
         if (dettagliOrdine.isEmpty()) {
-            return null; // Oppure lanciare un'eccezione specifica
+            return null;
         }
 
         ordine.setDettagli(dettagliOrdine);
         ordine.setTotale(dettagliOrdine.stream().mapToDouble(DettaglioOrdine::getPrezzoTotale).sum());
 
         Ordine savedOrdine = ordineRepository.save(ordine);
-        return DevTools.convertToDTO(savedOrdine);
+
+        return ordineMapper.toDTO(savedOrdine);
     }
 
     @Override
@@ -94,10 +91,9 @@ public class OrdineServiceImpl implements OrdineService {
     public OrdineDTO updateOrdine(Long id, OrdineDTO ordineDTO) {
         return ordineRepository.findById(id)
                 .map(existingOrdine -> {
-                    existingOrdine.setData(ordineDTO.getData());
-                    existingOrdine.setStato(ordineDTO.getStato());
-                    existingOrdine.setTotale(ordineDTO.getTotale());
-                    return DevTools.convertToDTO(ordineRepository.save(existingOrdine));
+                    Ordine updatedOrdine = ordineMapper.toEntity(ordineDTO);
+                    updatedOrdine.setId(existingOrdine.getId()); // Mantieni lo stesso ID
+                    return ordineMapper.toDTO(ordineRepository.save(updatedOrdine));
                 })
                 .orElse(null);
     }
@@ -115,8 +111,10 @@ public class OrdineServiceImpl implements OrdineService {
         if (utente == null) {
             return null;
         }
-        Ordine ordine = DevTools.convertToEntity(ordineDTO, utente);
+        Ordine ordine = ordineMapper.toEntity(ordineDTO);
+        ordine.setUtente(utente);
+
         Ordine savedOrdine = ordineRepository.save(ordine);
-        return DevTools.convertToDTO(savedOrdine);
+        return ordineMapper.toDTO(savedOrdine);
     }
 }

@@ -1,5 +1,6 @@
 package com.demo.service.Prodotto;
 
+import com.demo.mapper.ProdottoMapper;
 import com.demo.object.dto.crud.ProdottoDTO;
 import com.demo.object.model.Prodotto;
 import com.demo.repository.ProdottoRepository;
@@ -14,29 +15,31 @@ import java.util.stream.Collectors;
 public class ProdottoServiceImpl implements ProdottoService {
 
     private final ProdottoRepository prodottoRepository;
+    private final ProdottoMapper prodottoMapper;
 
-    public ProdottoServiceImpl(ProdottoRepository prodottoRepository) {
+    public ProdottoServiceImpl(ProdottoRepository prodottoRepository, ProdottoMapper prodottoMapper) {
         this.prodottoRepository = prodottoRepository;
+        this.prodottoMapper = prodottoMapper;
     }
 
     @Override
     public ProdottoDTO getProdottoById(Long id) {
         return prodottoRepository.findById(id)
-                .map(DevTools::convertToDTO)
+                .map(prodottoMapper::toDTO)
                 .orElse(null);
     }
 
     @Override
     public List<ProdottoDTO> getAllProdotti() {
         return prodottoRepository.findAll().stream()
-                .map(DevTools::convertToDTO)
+                .map(prodottoMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public ProdottoDTO createProdotto(ProdottoDTO prodottoDTO) {
-        Prodotto prodotto = DevTools.convertToEntity(prodottoDTO);
+        Prodotto prodotto = prodottoMapper.toEntity(prodottoDTO);
         Prodotto savedProdotto = prodottoRepository.save(prodotto);
         return DevTools.convertToDTO(savedProdotto);
     }
@@ -48,7 +51,7 @@ public class ProdottoServiceImpl implements ProdottoService {
                 .map(existingProdotto -> {
                     existingProdotto.setNome(prodottoDTO.getNome());
                     existingProdotto.setPrezzo(prodottoDTO.getPrezzo());
-                    return DevTools.convertToDTO(prodottoRepository.save(existingProdotto));
+                    return prodottoMapper.toDTO(prodottoRepository.save(existingProdotto));
                 })
                 .orElse(null);
     }
@@ -62,8 +65,8 @@ public class ProdottoServiceImpl implements ProdottoService {
     @Override
     @Transactional
     public ProdottoDTO saveProdotto(ProdottoDTO prodottoDTO) {
-        Prodotto prodotto = DevTools.convertToEntity(prodottoDTO);
+        Prodotto prodotto = prodottoMapper.toEntity(prodottoDTO);
         Prodotto savedProdotto = prodottoRepository.save(prodotto);
-        return DevTools.convertToDTO(savedProdotto);
+        return prodottoMapper.toDTO(savedProdotto);
     }
 }
