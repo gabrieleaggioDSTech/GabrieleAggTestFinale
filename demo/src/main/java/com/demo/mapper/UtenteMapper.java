@@ -20,15 +20,17 @@ public interface UtenteMapper {
     Utente toEntity(UtenteDTO dto);
 
     /**
+     * Metodo che converte la lista completa degli ordini in una lista di ID semplici
+     * usato nel mapper per evitare di caricare tutti i campi degli ordini per ogni utente.
+     * Il default viene usato per inserire logica direttamente dentro il mapper,
+     * senza usare classi esterne. (caso di utilizzo unico del metodo)
      *
-     * @param ordini
-     * @return
+     * @param ordini lista di entità Ordine
+     * @return lista degli ID degli ordini oppure null se non ci sono ordine associati all'utente.
      */
     @Named("mapOrdiniToIds")
     default List<Long> mapOrdiniToIds(List<Ordine> ordini) {
         return ordini != null ? ordini.stream().map(Ordine::getId).collect(Collectors.toList()) : null;
     }
-
-
 
 }

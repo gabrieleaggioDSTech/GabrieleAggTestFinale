@@ -1,6 +1,7 @@
 package com.demo.controller;
 
 import com.demo.object.dto.CreaOrdineDTO;
+import com.demo.object.dto.UpdateOrdineStatoDTO;
 import com.demo.object.dto.crud.OrdineDTO;
 import com.demo.service.Ordine.OrdineService;
 import org.springframework.http.ResponseEntity;
@@ -42,4 +43,10 @@ public class OrdineController {
         ordineService.deleteOrdine(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}/stato")
+    public ResponseEntity<OrdineDTO> updateOrdineStato(@PathVariable Long id, @RequestBody UpdateOrdineStatoDTO updateOrdineStatoDTO) {
+        return ResponseEntity.ok(ordineService.updateOrdineStato(id, updateOrdineStatoDTO));
+    }
+
 }

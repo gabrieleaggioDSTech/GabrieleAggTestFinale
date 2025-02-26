@@ -10,7 +10,7 @@ public interface DettaglioOrdineMapper {
 
     @Mapping(source = "ordine.id", target = "ordineId") // Associa l'ID dell'ordine
     @Mapping(source = "prodotto.id", target = "prodottoId") // Associa l'ID del prodotto
-    com.demo.object.dto.crud.DettaglioOrdineDTO toDTO(DettaglioOrdine dettaglioOrdine);
+    DettaglioOrdineDTO toDTO(DettaglioOrdine dettaglioOrdine);
 
     @Mapping(source = "ordineId", target = "ordine.id")
     @Mapping(source = "prodottoId", target = "prodotto.id")

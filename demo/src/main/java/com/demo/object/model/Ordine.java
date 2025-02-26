@@ -15,7 +15,7 @@ public class Ordine {
     private Long id;
 
     private LocalDate data;
-    private String stato;
+    private String stato;  // IN_ATTESA, SPEDITO, CONSEGNATO
     private Double totale;
 
     @ManyToOne
