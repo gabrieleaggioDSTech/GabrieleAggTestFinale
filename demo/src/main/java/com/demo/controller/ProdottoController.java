@@ -1,7 +1,7 @@
 package com.demo.controller;
 
 
-import com.demo.object.dto.ProdottoDTO;
+import com.demo.object.dto.crud.ProdottoDTO;
 import com.demo.service.Prodotto.ProdottoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

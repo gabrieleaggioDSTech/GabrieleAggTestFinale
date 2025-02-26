@@ -1,6 +1,6 @@
 package com.demo.service.Prodotto;
 
-import com.demo.object.dto.ProdottoDTO;
+import com.demo.object.dto.crud.ProdottoDTO;
 import com.demo.object.model.Prodotto;
 import com.demo.repository.ProdottoRepository;
 import com.demo.tools.DevTools;

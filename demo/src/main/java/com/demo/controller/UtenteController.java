@@ -1,7 +1,7 @@
 package com.demo.controller;
 
 import com.demo.object.dto.CreaUtenteDTO;
-import com.demo.object.dto.UtenteDTO;
+import com.demo.object.dto.crud.UtenteDTO;
 import com.demo.service.Utente.UtenteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
 package com.demo.controller;
 
-import com.demo.object.dto.DettaglioOrdineDTO;
+import com.demo.object.dto.crud.DettaglioOrdineDTO;
 import com.demo.service.DettaglioOrdine.DettaglioOrdineService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

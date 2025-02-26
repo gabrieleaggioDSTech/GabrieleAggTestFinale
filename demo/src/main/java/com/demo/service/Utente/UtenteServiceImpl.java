@@ -1,7 +1,7 @@
 package com.demo.service.Utente;
 
 import com.demo.object.dto.CreaUtenteDTO;
-import com.demo.object.dto.UtenteDTO;
+import com.demo.object.dto.crud.UtenteDTO;
 import com.demo.object.model.Utente;
 import com.demo.repository.UtenteRepository;
 import com.demo.tools.DevTools;

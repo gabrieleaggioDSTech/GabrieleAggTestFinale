@@ -1,11 +1,11 @@
 package com.demo.tools;
 
-import com.demo.object.dto.DettaglioOrdineDTO;
-import com.demo.object.dto.OrdineDTO;
-import com.demo.object.dto.ProdottoDTO;
-import com.demo.object.dto.UtenteDTO;
+import com.demo.object.dto.crud.DettaglioOrdineDTO;
+import com.demo.object.dto.crud.OrdineDTO;
+import com.demo.object.dto.crud.ProdottoDTO;
+import com.demo.object.dto.crud.UtenteDTO;
 import com.demo.object.model.*;
-import org.springframework.util.ObjectUtils;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

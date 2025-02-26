@@ -1,6 +1,7 @@
 package com.demo.controller;
 
-import com.demo.object.dto.OrdineDTO;
+import com.demo.object.dto.CreaOrdineDTO;
+import com.demo.object.dto.crud.OrdineDTO;
 import com.demo.service.Ordine.OrdineService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,8 @@ public class OrdineController {
     }
 
     @PostMapping
-    public ResponseEntity<OrdineDTO> createOrdine(@RequestBody OrdineDTO ordineDTO) {
-        return ResponseEntity.ok(ordineService.createOrdine(ordineDTO));
+    public ResponseEntity<OrdineDTO> createOrdine(@RequestBody CreaOrdineDTO creaOrdineDTO) {
+        return ResponseEntity.ok(ordineService.createOrdine(creaOrdineDTO));
     }
 
     @PutMapping("/{id}")

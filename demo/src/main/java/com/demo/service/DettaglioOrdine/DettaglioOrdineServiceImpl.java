@@ -1,7 +1,7 @@
 package com.demo.service.DettaglioOrdine;
 
 
-import com.demo.object.dto.DettaglioOrdineDTO;
+import com.demo.object.dto.crud.DettaglioOrdineDTO;
 import com.demo.object.model.DettaglioOrdine;
 import com.demo.object.model.Ordine;
 import com.demo.object.model.Prodotto;

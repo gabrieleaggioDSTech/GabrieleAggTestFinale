@@ -1,6 +1,6 @@
 package com.demo.service.DettaglioOrdine;
 
-import com.demo.object.dto.DettaglioOrdineDTO;
+import com.demo.object.dto.crud.DettaglioOrdineDTO;
 
 import java.util.List;
 
