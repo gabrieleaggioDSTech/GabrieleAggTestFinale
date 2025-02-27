@@ -3,7 +3,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/dbfinale?allowPublicKeyRetrieval=true&useSSL=false
     username: root
-    password: 1234
+    password: forzamilan234
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
