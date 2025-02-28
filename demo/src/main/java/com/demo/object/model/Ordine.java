@@ -23,5 +23,5 @@ public class Ordine {
     private Utente utente;
 
     @OneToMany(mappedBy = "ordine", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DettaglioOrdine> dettagli;
+    private List<DettaglioOrdine> dettagli; //aaa
 }
