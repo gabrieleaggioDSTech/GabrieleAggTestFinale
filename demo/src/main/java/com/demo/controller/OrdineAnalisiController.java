@@ -30,6 +30,7 @@ public class OrdineAnalisiController {
     public ResponseEntity<Double> getTotaleSpeso(@PathVariable Long userId) {
         Double totaleSpeso = ordineAnalisiService.getTotaleSpeso(userId);
 
+        //Controllo sul totale speso, se è null o 0 torna una notFound
         if (totaleSpeso == null || totaleSpeso == 0.0) {
             return ResponseEntity.notFound().build();
         }
@@ -51,9 +52,11 @@ public class OrdineAnalisiController {
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
+        //Metodo isAfter di LocalDate
         if (startDate.isAfter(endDate)) {
             return ResponseEntity.badRequest().body(null);
         }
+        //Lista di ordini da tornare
         List<OrdineDTO> ordini = ordineAnalisiService.getOrdiniByIntervallo(startDate, endDate);
 
         return ResponseEntity.ok(ordini);
